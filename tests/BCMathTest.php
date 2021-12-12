@@ -7,6 +7,17 @@ use bcmath_compat\BCMath;
  */
 class BCMathTest extends PHPUnit\Framework\TestCase
 {
+    public function testNullParams()
+    {
+        if (version_compare(PHP_VERSION, '8.1.0') >= 0) {
+            $this->setExpectedException('PHPUnit_Framework_Error_Deprecated');
+        } else {
+            $this->markTestSkipped('< PHP 8.1.0 has different behavior than >= PHP 8.1.0');
+        }
+        $a = bcadd(null, '9');
+        $b = BCMath::add(null, '9');
+    }
+
     /**
      * Produces all combinations of test values.
      *
@@ -35,7 +46,7 @@ class BCMathTest extends PHPUnit\Framework\TestCase
             ['2', '190', 3],
             ['9', '0'],
             ['0', '9'],
-            [null, '9'],
+            //[null, '9'],
             ['-0.0000005', '0', 3],
             /*
                there is some wonkyness with bcmul() in PHP 7.3 that this shim doesn't emulate:
@@ -226,6 +237,7 @@ class BCMathTest extends PHPUnit\Framework\TestCase
         switch ($name) {
             case 'PHPUnit_Framework_Error_Notice':
             case 'PHPUnit_Framework_Error_Warning':
+            case 'PHPUnit_Framework_Error_Deprecated':
                 $name = str_replace('_', '\\', $name);
         }
         $this->expectException($name);

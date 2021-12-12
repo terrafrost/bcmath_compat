@@ -224,7 +224,10 @@ abstract class BCMath
 
         $min = defined('PHP_INT_MIN') ? PHP_INT_MIN : ~PHP_INT_MAX;
         if (bccomp($y, PHP_INT_MAX) > 0 || bccomp($y, $min) <= 0) {
-            throw new \ValueError('bcpow(): Argument #2 ($exponent) is too large');
+            trigger_error(
+                "bcpow(): exponent too large",
+                E_USER_WARNING
+            );
         }
 
         $sign = self::isNegative($x) ? '-' : '';
@@ -402,19 +405,23 @@ abstract class BCMath
             }
         }
         foreach ($numbers as $i => $arg) {
+            $num = $i + 1;
             switch (true) {
                 case is_bool($arg):
                 case is_numeric($arg):
                 case is_string($arg):
                 case is_object($arg) && method_exists($arg, '__toString'):
-                case is_null($arg):
-                    if (!is_bool($arg) && !is_null($arg) && !is_numeric("$arg")) {
+                    if (!is_bool($arg) && !is_numeric("$arg")) {
                         trigger_error("bc$name: bcmath function argument is not well-formed", E_USER_WARNING);
                     }
                     break;
+                // PHP >= 8.1 has deprecated the passing of nulls to string parameters
+                case is_null($arg):
+                    trigger_error("bc$name(): Passing null to parameter #$num (\$$names[$i]) of type string is deprecated", E_USER_DEPRECATED);
+                    break;
                 default:
                     $type = is_object($arg) ? get_class($arg) : gettype($arg);
-                    throw new \TypeError("bc$name(): Argument #$i (\$$names[$i]) must be of type string, $type given");
+                    throw new \TypeError("bc$name(): Argument #$num (\$$names[$i]) must be of type string, $type given");
             }
         }
         if (!isset(self::$scale)) {
