@@ -7,6 +7,16 @@ use bcmath_compat\BCMath;
  */
 class BCMathTest extends PHPUnit\Framework\TestCase
 {
+	public function testDemo()
+	{
+		//$this->expectException('PHPUnit\\Framework\\Error\\Deprecated');
+		try {
+		trigger_error('zzz', E_USER_DEPRECATED);
+		} catch (\Throwable $e) {
+		echo $e::class;
+		}
+	}
+
     public function testNullParams()
     {
         if (version_compare(PHP_VERSION, '8.1.0') >= 0) {
