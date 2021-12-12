@@ -14,8 +14,16 @@ class BCMathTest extends PHPUnit\Framework\TestCase
         } else {
             $this->markTestSkipped('< PHP 8.1.0 has different behavior than >= PHP 8.1.0');
         }
-        //$a = bcadd(null, '9');
+try {
+        $a = bcadd(null, '9');
+} catch (\Throwable $e) {
+  echo 'zzz = ' . $e::class . "\n";
+}
+try {
         $b = BCMath::add(null, '9');
+} catch (\Throwable $e) {
+  echo 'xxx = ' . $e::class . "\n";
+}
     }
 
     /**
@@ -234,7 +242,6 @@ class BCMathTest extends PHPUnit\Framework\TestCase
             parent::setExpectedException($name, $message, $code);
             return;
         }
-echo "\nzzzname = $name\n";
         switch ($name) {
             case 'PHPUnit_Framework_Error_Notice':
             case 'PHPUnit_Framework_Error_Warning':
