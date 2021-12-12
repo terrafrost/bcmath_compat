@@ -234,6 +234,7 @@ class BCMathTest extends PHPUnit\Framework\TestCase
             parent::setExpectedException($name, $message, $code);
             return;
         }
+echo "\nzzzname = $name\n";
         switch ($name) {
             case 'PHPUnit_Framework_Error_Notice':
             case 'PHPUnit_Framework_Error_Warning':
