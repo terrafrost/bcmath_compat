@@ -417,11 +417,13 @@ abstract class BCMath
                     break;
                 // PHP >= 8.1 has deprecated the passing of nulls to string parameters
                 case is_null($arg):
-                    trigger_error("bc$name(): Passing null to parameter #$num (\$$names[$i]) of type string is deprecated", E_USER_DEPRECATED);
+                    $error = "bc$name(): Passing null to parameter #$num (\$$names[$i]) of type string is deprecated";
+                    trigger_error($error, E_USER_DEPRECATED);
                     break;
                 default:
                     $type = is_object($arg) ? get_class($arg) : gettype($arg);
-                    throw new \TypeError("bc$name(): Argument #$num (\$$names[$i]) must be of type string, $type given");
+                    $error = "bc$name(): Argument #$num (\$$names[$i]) must be of type string, $type given";
+                    throw new \TypeError($error);
             }
         }
         if (!isset(self::$scale)) {

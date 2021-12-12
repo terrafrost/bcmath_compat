@@ -14,7 +14,7 @@ class BCMathTest extends PHPUnit\Framework\TestCase
         } else {
             $this->markTestSkipped('< PHP 8.1.0 has different behavior than >= PHP 8.1.0');
         }
-        $a = bcadd(null, '9');
+        //$a = bcadd(null, '9');
         $b = BCMath::add(null, '9');
     }
 
